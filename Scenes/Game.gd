@@ -6,6 +6,8 @@ var call_id = null
 var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
 var tried_to_connect = false
 
+var text = ""
+
 func _process(_delta):
 	if $Yugo.global_position.distance_to($WcDonalds.global_position) < 100:
 		if !tried_to_connect:
@@ -25,7 +27,16 @@ func _on_DeepgramInstance_message_received(message):
 	var message_json = JSON.parse(message)
 	if message_json.error == OK:
 		print(message)
-
+		
+		if typeof(message_json.result) == TYPE_DICTIONARY:
+			if message_json.result.has("type"):
+				if message_json.result["type"] == "ConversationText":
+					var x = message_json.result["role"] + ": " + message_json.result["content"] + "\n"
+					text += x
+					$CanvasLayer/Label.text = text
+					var lines_to_skip = $CanvasLayer/Label.get_line_count() - $CanvasLayer/Label.max_lines_visible - 1
+					if lines_to_skip > 0:
+						$CanvasLayer/Label.lines_skipped = lines_to_skip
 
 func _on_DeepgramInstance_call_id_received(id):
 	call_id = id
@@ -46,7 +57,7 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 		
 	var response_body = body.get_string_from_utf8()
 	print(response_body)
-	
+
 	var response_dictionary = JSON.parse(response_body)
 	if response_dictionary.error == OK:
 		if typeof(response_dictionary.result) == TYPE_DICTIONARY:
@@ -54,9 +65,22 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 				if typeof(response_dictionary.result["order"]) == TYPE_DICTIONARY:
 					if response_dictionary.result["order"]["item"] == "coke":
 						print("asked for a coke!")
+						spawn_conke()
 					if response_dictionary.result["order"]["item"] == "pepsi":
 						print("asked for a pepsi!")
+						spawn_bepis()
 
+func spawn_bepis():
+	var bepis = load("res://Scenes/Bepis.tscn").instance()
+	bepis.global_position = $WcDonalds.global_position	
+	bepis.yugo = $Yugo
+	add_child(bepis)
+
+func spawn_conke():
+	var conke = load("res://Scenes/Conke.tscn").instance()
+	conke.global_position = $WcDonalds.global_position	
+	conke.yugo = $Yugo
+	add_child(conke)
 	
 func _on_DeepgramInstance_binary_packet_received(packet):
 	# we pretty much always have enough frames available

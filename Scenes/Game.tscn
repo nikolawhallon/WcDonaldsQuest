@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/DeepgramIntegration/DeepgramInstance.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/skyline.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/Yugo.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/WcDonalds.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Resources/context_sensitive_text.tres" type="Theme" id=8]
 
 [sub_resource type="AudioStreamGenerator" id=1]
 
@@ -59,6 +60,18 @@ position = Vector2( 0, 208 )
 
 [node name="WcDonalds" parent="." instance=ExtResource( 7 )]
 position = Vector2( 320, 120 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = 14.0
+theme = ExtResource( 8 )
+autowrap = true
+max_lines_visible = 3
 
 [connection signal="binary_packet_received" from="DeepgramInstance" to="." method="_on_DeepgramInstance_binary_packet_received"]
 [connection signal="call_id_received" from="DeepgramInstance" to="." method="_on_DeepgramInstance_call_id_received"]
