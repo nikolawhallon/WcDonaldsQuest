@@ -22,3 +22,6 @@ texture = ExtResource( 2 )
 [node name="TalkBoxLit" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 3 )
+
+[node name="SpawnPoint" type="Node2D" parent="."]
+position = Vector2( 32.5, -96 )

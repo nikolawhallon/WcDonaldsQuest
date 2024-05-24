@@ -73,13 +73,13 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 
 func spawn_bepis():
 	var bepis = load("res://Scenes/Bepis.tscn").instance()
-	bepis.global_position = $WcDonalds.global_position	
+	bepis.global_position = $WcDonalds/SpawnPoint.global_position	
 	bepis.yugo = $Yugo
 	add_child(bepis)
 
 func spawn_conke():
 	var conke = load("res://Scenes/Conke.tscn").instance()
-	conke.global_position = $WcDonalds.global_position	
+	conke.global_position = $WcDonalds/SpawnPoint.global_position	
 	conke.yugo = $Yugo
 	add_child(conke)
 	
