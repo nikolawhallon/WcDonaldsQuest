@@ -55,11 +55,11 @@ texture = ExtResource( 5 )
 position = Vector2( 160, 0 )
 texture = ExtResource( 5 )
 
+[node name="WcDonalds" parent="." instance=ExtResource( 7 )]
+position = Vector2( 320, 208 )
+
 [node name="Yugo" parent="." instance=ExtResource( 6 )]
 position = Vector2( 0, 208 )
-
-[node name="WcDonalds" parent="." instance=ExtResource( 7 )]
-position = Vector2( 320, 120 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

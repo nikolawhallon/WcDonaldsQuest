@@ -102,7 +102,7 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 						"encoding": "linear16",
 						"sample_rate": mix_rate,
 						"container": "none",
-						"buffer_size": 250,
+						"buffer_size": 500,
 					},
 				},
 				"agent": {

@@ -9,10 +9,11 @@ var tried_to_connect = false
 var text = ""
 
 func _process(_delta):
-	if $Yugo.global_position.distance_to($WcDonalds.global_position) < 100:
+	if $Yugo.global_position.distance_to($WcDonalds.global_position) < 50:
 		if !tried_to_connect:
 			initialize_drive_through()
 			tried_to_connect = true
+			$WcDonalds/TalkBoxLit.visible = true
 
 func initialize_drive_through():
 	$DeepgramInstance.initialize("INSERT_API_KEY")
