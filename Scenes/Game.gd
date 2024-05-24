@@ -1,18 +1,27 @@
 extends Node2D
 
-var BEPIS_SERVER_URL = "http://localhost:3000"
+var BEPIS_SERVER_URL = "https://wcdonaldsquest.deepgram.com"
 var call_id = null
 
 var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
 
 func _ready():
+	initialize_drive_through()
+
+
+func _process(_delta):
+	if $Yugo.global_position.distance_to($WcDonalds.global_position) < 100:
+		initialize_drive_through()
+
+func initialize_drive_through():
 	$DeepgramInstance.initialize("INSERT_API_KEY")
 
 	playback = $AudioStreamPlayer.get_stream_playback()
 	print("got a playback object?")
 	print(playback.get_frames_available())
 	$AudioStreamPlayer.play()
-	
+
+
 func _on_DeepgramInstance_message_received(message):
 	var message_json = JSON.parse(message)
 	if message_json.error == OK:
@@ -31,7 +40,7 @@ func _on_Timer_timeout():
 		$HTTPRequest.request(url)
 
 
-func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 	if response_code != 200:
 		print("failed to make request for call info")
 		return

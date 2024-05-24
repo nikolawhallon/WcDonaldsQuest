@@ -15,7 +15,8 @@ var audio_buffer: PoolRealArray
 var client = WebSocketClient.new()
 var ws_connected = false
 
-var BEPIS_SERVER_URL = "http://localhost:3000"
+var STS_URL = "wss://sts.sandbox.deepgram.com"
+var BEPIS_SERVER_URL = "https://wcdonaldsquest.deepgram.com"
 
 # functions
 
@@ -38,8 +39,6 @@ func _ready():
 
 
 func initialize(api_key):
-	var mix_rate = AudioServer.get_mix_rate()
-
 	# start recording from the mic (actually this only starts capture of the recording I think)
 	$MicrophoneInstance.recording = true
 
@@ -51,14 +50,14 @@ func initialize(api_key):
 
 	if OS.get_name() == "HTML5":
 		var protocols = PoolStringArray(["token", api_key])
-		var err = client.connect_to_url("wss://sts.sandbox.deepgram.com/agent", protocols, false, PoolStringArray())
+		var err = client.connect_to_url(STS_URL + "/agent", protocols, false, PoolStringArray())
 		if err != OK:
 			print("Unable to connect")
 			emit_signal("message_received", "unable to connect to deepgram;")
 			set_process(false)
 	else:
 		var headers = PoolStringArray(["Authorization: Token " + api_key])
-		var err = client.connect_to_url("ws://localhost:5000/agent", PoolStringArray(), false, headers)
+		var err = client.connect_to_url(STS_URL + "agent", PoolStringArray(), false, headers)
 		if err != OK:
 			print("Unable to connect")
 			emit_signal("message_received", "unable to connect to deepgram;")
@@ -71,7 +70,6 @@ func _closed(was_clean = false):
 
 func _connected(_proto):
 	print("Connected to Deepgram!")
-	var id = "45ceb0f6-f361-48f3-901a-abe802f720be"
 
 	var url = BEPIS_SERVER_URL + "/calls"
 
@@ -85,10 +83,12 @@ func _connected(_proto):
 func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 	if response_code != 200:
 		return
-		
+	
 	var id = body.get_string_from_utf8()
 	print(id)
 	emit_signal("call_id_received", id)
+	
+	var mix_rate = AudioServer.get_mix_rate()
 	
 	#var config_message = '{"type": "SettingsConfiguration", "audio": {"input": {"encoding": "linear16", "sample_rate": 48000}}}'
 	var config_message = {
@@ -96,11 +96,11 @@ func _on_HTTPRequest_request_completed(_result, response_code, _headers, body):
 				"audio": {
 					"input": {
 						"encoding": "linear16",
-						"sample_rate": 48000,
+						"sample_rate": mix_rate,
 					},
 					"output": {
 						"encoding": "linear16",
-						"sample_rate": 48000,
+						"sample_rate": mix_rate,
 						"container": "none",
 						"buffer_size": 250,
 					},
