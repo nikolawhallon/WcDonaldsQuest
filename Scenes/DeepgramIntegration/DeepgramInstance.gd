@@ -57,7 +57,7 @@ func initialize(api_key):
 			set_process(false)
 	else:
 		var headers = PoolStringArray(["Authorization: Token " + api_key])
-		var err = client.connect_to_url(STS_URL + "agent", PoolStringArray(), false, headers)
+		var err = client.connect_to_url(STS_URL + "/agent", PoolStringArray(), false, headers)
 		if err != OK:
 			print("Unable to connect")
 			emit_signal("message_received", "unable to connect to deepgram;")

@@ -4,14 +4,13 @@ var BEPIS_SERVER_URL = "https://wcdonaldsquest.deepgram.com"
 var call_id = null
 
 var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
-
-func _ready():
-	initialize_drive_through()
-
+var tried_to_connect = false
 
 func _process(_delta):
 	if $Yugo.global_position.distance_to($WcDonalds.global_position) < 100:
-		initialize_drive_through()
+		if !tried_to_connect:
+			initialize_drive_through()
+			tried_to_connect = true
 
 func initialize_drive_through():
 	$DeepgramInstance.initialize("INSERT_API_KEY")
