@@ -1,6 +1,10 @@
 # WcDonaldsQuest
 
-WcDonald's Quest is a game where you order Bepis and Conke. It is an example of a more complete client
+WcDonald's Quest represents next generation drive-through AI experiences through a cutting-edge, multi-dimensional,
+paradigm shift that will revolutionize the industry through disruptive technology.
+
+Actually it's just a techo-demo game where you drive a Yugo up to a WcDonald's restaurant
+and order Bepis and Conke by talking to an AI agent with your microphone. It is an example of a more complete client
 experience to the bepis-lite server here:
 
 https://github.com/nikolawhallon/bepis-lite
